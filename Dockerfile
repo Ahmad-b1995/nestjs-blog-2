@@ -32,5 +32,6 @@ FROM node:21-alpine AS production
 LABEL stage=production \
     description="Production environment"
 COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /package.json ./package.json
 COPY --from=build /app/dist ./dist
 CMD ["node", "dist/main.js"]
