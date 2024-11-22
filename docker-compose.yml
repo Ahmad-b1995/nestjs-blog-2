@@ -15,11 +15,11 @@ services:
     environment:
       - DB_HOST=blog_mysql
       - REDIS_HOST=blog_redis
-    depends_on:
-      blog_mysql:
-        condition: service_healthy
-      blog_redis:
-        condition: service_healthy
+    # depends_on:
+    #   blog_mysql:
+    #     condition: service_healthy
+    #   blog_redis:
+    #     condition: service_healthy
     volumes:
       - ./uploads:/uploads
     healthcheck:
