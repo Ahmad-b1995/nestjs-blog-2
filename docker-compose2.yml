@@ -1,0 +1,42 @@
+services:
+  ahmadcodes_nextjs:
+    image: ahmadcodes_nextjs:latest
+    container_name: ahmadcodes_nextjs
+    ports:
+      - '3000:3000'
+    networks:
+      - ahmadCodes_intranet
+    volumes:
+      - /app/node_modules
+      - /app/.next
+    restart: always
+    depends_on:
+      - blog_nestjs
+    labels:
+      - 'service=app'
+      - 'stage=production'
+    healthcheck:
+      test: ["CMD-SHELL", "node -e 'require(\"http\").get(\"http://localhost:3000/\", (res) => { if (res.statusCode === 200) process.exit(0); else process.exit(1); })'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  blog_nestjs:
+    image: blog_nestjs:latest
+    container_name: blog_nestjs
+    restart: always
+    networks:
+      - ahmadCodes_intranet
+    volumes:
+      - ./uploads:/uploads
+  healthcheck:
+    test: ["CMD-SHELL", "node -e 'require(\"http\").get(\"http://localhost:3001\", (res) => { if (res.statusCode === 200) process.exit(0); else process.exit(1); })'"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+    command: node dist/main.js
+
+networks:
+  ahmadCodes_intranet:
+    name: ahmadCodes_intranet
+    driver: bridge
