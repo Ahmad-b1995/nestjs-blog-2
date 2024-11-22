@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
       target: production
     ports:
-      - '${APP_PORT}:${APP_PORT}'
+      - '${APP_PORT}:3000'
     networks:
       - blog_intranet
     env_file:
